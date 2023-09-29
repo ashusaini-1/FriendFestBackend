@@ -3,21 +3,6 @@
 **Installation**
 `To run this Node.js project, you'll need to have Node.js and npm (Node Package Manager) installed on your machine. If you haven't installed them yet, you can download and install Node.js from the official website: Node.js Downloads.`
 
-**Project Structure**
-
-  ├── src/<br>
-  |   ├── server.js    <br>      
-  |   ├── app.js       <br>     
-  |   ├── controllers/ <br>      
-  |   ├── routes/      <br>     
-  |   ├── models/     <br>     
-  |   ├── middleware/ <br>     
-  |   └── config/     <br>     
-  ├── package.json    <br>     
-  ├── README.md      <br>      
-  └── .gitignore    <br>        
-
-
 **Getting Started**
 
 **steps**
@@ -34,12 +19,11 @@ git clone https://github.com/ashusaini-1/Rudra-innovative-assignment.git
 
 4.**Add configuration file**
 
-** config/config.env **
+** config/config.env **<br>
  PORT=4000<br>
  DB_URI="Set your database URI (e.g., DB_URI=mongodb://your-database-uri)"<br>
  COOKIE_EXPIRES=2<br>
  JWT_SECRET=your_jwt_secret<br>
  JWT_EXPIRE=3<br>
-
 
 
