@@ -1,16 +1,16 @@
 # Node.js Project README Script
 
 **Installation**
-`To run this Node.js project, you'll need to have Node.js and npm (Node Package Manager) installed on your machine. If you haven't installed them yet, `
+`To run this Node.js project, you'll need to have Node.js and npm (Node Package Manager) installed on your machine. If you haven't installed them yet, `<br>
 `you can download and install Node.js from the official website: Node.js Downloads.`
 
 **Project Structure**
 `
   ├── src/
-  |   ├── server.js           # Entry point of application
-  |   ├── app.js              # Entry point for all routes
-  |   ├── controllers/       # Controllers for handling routes and business logic
-  |   ├── routes/            # Define your API routes here
+  |   ├── server.js           # Entry point of application <br>
+  |   ├── app.js              # Entry point for all routes<br>
+  |   ├── controllers/       # Controllers for handling routes and business logic <br>
+  |   ├── routes/            # Define your API routes here <br>
   |   ├── models/            # Data models and schemas
   |   ├── middleware/        # Custom middleware functions
   |   └── config/            # Configuration files
