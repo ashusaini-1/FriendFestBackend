@@ -5,7 +5,7 @@
 
 **Project Structure**
 
-  ├── src/
+  ├── src/<br>
   |   ├── server.js    <br>      
   |   ├── app.js       <br>     
   |   ├── controllers/ <br>      
@@ -35,11 +35,11 @@ git clone https://github.com/ashusaini-1/Rudra-innovative-assignment.git
 4.**Add configuration file**
 
 ** config/config.env **
- `PORT=4000`<br>
- `DB_URI="Set your database URI (e.g., DB_URI=mongodb://your-database-uri)"`<br>
- `COOKIE_EXPIRES=2`<br>
- `JWT_SECRET=your_jwt_secret`<br>
- `JWT_EXPIRE=3`<br>
+ PORT=4000<br>
+ DB_URI="Set your database URI (e.g., DB_URI=mongodb://your-database-uri)"<br>
+ COOKIE_EXPIRES=2<br>
+ JWT_SECRET=your_jwt_secret<br>
+ JWT_EXPIRE=3<br>
 
 
 
