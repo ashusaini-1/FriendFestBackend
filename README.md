@@ -7,16 +7,16 @@
 **Project Structure**
 
   ├── src/
-  |   ├── server.js           # Entry point of application <br>
-  |   ├── app.js              # Entry point for all routes<br>
-  |   ├── controllers/       # Controllers for handling routes and business logic <br>
-  |   ├── routes/            # Define your API routes here <br>
-  |   ├── models/            # Data models and schemas
-  |   ├── middleware/        # Custom middleware functions
-  |   └── config/            # Configuration files
-  ├── package.json           # Project metadata and dependencies
-  ├── README.md              # Documentation
-  └── .gitignore             # Gitignore rules
+  |   ├── server.js    <br>       # Entry point of application <br>
+  |   ├── app.js       <br>       # Entry point for all routes<br>
+  |   ├── controllers/ <br>      # Controllers for handling routes and business logic <br>
+  |   ├── routes/      <br>      # Define your API routes here <br>
+  |   ├── models/     <br>       # Data models and schemas<br>
+  |   ├── middleware/ <br>       # Custom middleware functions<br>
+  |   └── config/     <br>       # Configuration files<br>
+  ├── package.json    <br>       # Project metadata and dependencies<br>
+  ├── README.md      <br>        # Documentation<br>
+  └── .gitignore    <br>         # Gitignore rules<br>
 
 
 **Getting Started**
@@ -25,7 +25,7 @@
 
 
 1.**Clone this repository to your local machine using Git:**
-`git clone https://github.com/ashusaini-1/Rudra-innovative-assignment.git`
+git clone https://github.com/ashusaini-1/Rudra-innovative-assignment.git
 
 2.**Navigate to the project directory:**
   cd backend
@@ -36,11 +36,11 @@
 4.**Add configuration file**
 
 ** config/config.env
- `PORT=4000`
- `DB_URI="Set your database URI (e.g., DB_URI=mongodb://your-database-uri)"`
- `COOKIE_EXPIRES=2`
- `JWT_SECRET=your_jwt_secret`
- `JWT_EXPIRE=3`
+ `PORT=4000`<br>
+ `DB_URI="Set your database URI (e.g., DB_URI=mongodb://your-database-uri)"`<br>
+ `COOKIE_EXPIRES=2`<br>
+ `JWT_SECRET=your_jwt_secret`<br>
+ `JWT_EXPIRE=3`<br>
 **
 
 
