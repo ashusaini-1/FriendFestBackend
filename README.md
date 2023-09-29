@@ -5,7 +5,7 @@
 `you can download and install Node.js from the official website: Node.js Downloads.`
 
 **Project Structure**
-`
+
   ├── src/
   |   ├── server.js           # Entry point of application <br>
   |   ├── app.js              # Entry point for all routes<br>
@@ -16,7 +16,7 @@
   |   └── config/            # Configuration files
   ├── package.json           # Project metadata and dependencies
   ├── README.md              # Documentation
-  └── .gitignore             # Gitignore rules`
+  └── .gitignore             # Gitignore rules
 
 
 **Getting Started**
