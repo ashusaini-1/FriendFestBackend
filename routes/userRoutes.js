@@ -13,11 +13,11 @@ const {
 } = require("../controller/userController");
 
 //userRoutes
-router.route("/signup").post(registerUser);
+router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
-router.route("/logout").post(logout);
-router.route("/forgot").post(isAuthenticatedUser,forgotPassword);
-router.route("/me/:id").get(isAuthenticatedUser, getUserDetails);
+router.route("/logout").post(isAuthenticatedUser, logout);
+router.route("/forgot").post(isAuthenticatedUser, forgotPassword);
+router.route("/me").get(isAuthenticatedUser, getUserDetails);
 router.route("/users").get(isAuthenticatedUser, allUser);
 router.route("/update/user/:id").put(isAuthenticatedUser, updateUser);
 router.route("/delete/user/:id").delete(isAuthenticatedUser, deleteUser);

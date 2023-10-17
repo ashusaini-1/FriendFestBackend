@@ -5,25 +5,27 @@ const ErrorHandler = require("../utils/errorHandler");
 
 //Register User
 module.exports.registerUser = async (req, res, next) => {
-  const { name, email, contact, password } = req.body;
+  const { name, email, password ,contact} = req.body;
+
   try {
-    if (!name || !email || !contact || !password) {
+    if (!name || !email ||!contact|| !password) {
       return next(new ErrorHandler("Please Enter all the Details", 401));
     }
 
-    const userExists = await User.findOne({ email });
-    if (userExists) {
+    const userExists = await User.findOne({email});
+    const numberExists = await User.findOne({contact});
+
+    if (userExists ||numberExists ) {
       return res.status(409).json({
         success: false,
         message: "User already exists",
       });
     }
-
     const user = await User.create({
       name,
       email,
-      password,
       contact,
+      password
     });
 
     sendToken(user, 200, res);
@@ -97,7 +99,7 @@ module.exports.logout = async (req, res) => {
 
 // Get User Detail
 exports.getUserDetails = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user.id);
 
   res.status(200).json({
     success: true,

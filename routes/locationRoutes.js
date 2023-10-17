@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { updateLocation, getUsersWithinRadius }= require("../controller/locationController");
+const {
+  addOrUpdateLocation,
+  getUsersWithinRadius,
+} = require("../controller/locationController");
+const { isAuthenticatedUser } = require("../middleware/auth");
 
-// User registration route
-router.route("/update-location").post(updateLocation);
+router.route("/location/upsert").post(isAuthenticatedUser, addOrUpdateLocation);
 
-// User login route
-router("/radius").post(getUsersWithinRadius);
+router.route("/nearby/users").get(isAuthenticatedUser, getUsersWithinRadius);
 module.exports = router;

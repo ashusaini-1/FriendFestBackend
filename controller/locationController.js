@@ -1,68 +1,77 @@
 const User = require("../model/userModel");
-const Location = require("../entities/location");
+const Location = require("../model/locationModel");
 const asyncHandler = require("express-async-handler");
+const geolib = require("geolib");
 
-// Controller for updating a user's location
-exports.updateLocation = asyncHandler(async (req, res) => {
-  const userEmail = req.user.email; 
-  const { latitude, longitude } = req.body;
-    const user = await User.findOne({ email: userEmail });
 
-    if (!user) {
-      res.status(404);
-      throw new Error("User not Found");
-    }
-    const location = await Location.findOne({ user: user._id });
-    if (location) {
-      location.latitude = latitude;
-      location.longitude = longitude;
-      location.timestamp = new Date();
-      await location.save();
+//Add or update user location
+exports.addOrUpdateLocation = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { latitude, longitude } = req.body;
+
+    const locationPoint = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
+
+    const filter = { user: userId };
+    const update = { location: locationPoint };
+    const options = { new: true, upsert: true };
+
+    const existingLocation = await Location.findOneAndUpdate(
+      filter,
+      update,
+      options
+    );
+
+    if (existingLocation) {
+      res.status(200).json({ message: "Location updated successfully" });
     } else {
       const newLocation = new Location({
-        user: user._id,
-        latitude,
-        longitude,
-        timestamp: new Date(),
+        user: userId,
+        location: locationPoint,
       });
-      await newLocation.save();
-    }
 
-    res.status(201).json({ message: "Location updated successfully" });
+      await newLocation.save();
+      res.status(201).json({ message: "Location added successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred." });
+  }
 });
 
-
-exports.getUsersWithinRadius = asyncHandler(async (req, res) => {
-  const userEmail = req.user.email; 
-  const { latitude, longitude } = req.query;
-
-    // const user = await User.findOne({ email: userEmail });
-
-    // if (!user) {
-    //   res.status(404);
-    //   throw new Error("User not Found");
-    // }
-   
-    const userLocation = await Location.findOne({ user: User._id });
-
-    if (!userLocation) {
-      res.status(404);
-      throw new Error("User location not found");
+exports.getUsersWithinRadius = async (req, res) => {
+  try {
+    const { latitude, longitude } = req.query;
+    if (!latitude || !longitude) {
+      return res
+        .status(400)
+        .json({ error: "Latitude and longitude are required." });
     }
 
-   
-    const radius = 0.2;
-    const usersWithinRadius = await Location.find({
-      user: { $ne: User._id }, 
-      latitude: {
-        $gte: userLocation.latitude - radius,
-        $lte: userLocation.latitude + radius,
+    const userLocations = await Location.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          $maxDistance: 200,
+        },
       },
-      longitude: {
-        $gte: userLocation.longitude - radius,
-        $lte: userLocation.longitude + radius,
-      },
+    }).populate({
+      path: "user",
+      select: "name _id",
     });
 
-    res.status(201).json(usersWithinRadius);
-});
+    res.status(200).json({
+      success: true,
+      userLocations,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred." });
+  }
+};

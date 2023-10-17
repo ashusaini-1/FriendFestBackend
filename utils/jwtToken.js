@@ -13,4 +13,3 @@ module.exports.sendToken = async (user, statuCode, res) => {
     token,
   });
 };
-
