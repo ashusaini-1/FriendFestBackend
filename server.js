@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5500;
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://friendfestapp.onrender.com",
     methods: ["GET", "POST"],
   },
 });
