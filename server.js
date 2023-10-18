@@ -14,6 +14,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: "https://friendfestapp.onrender.com",
     methods: ["GET", "POST"],
+      credentials: true,
   },
 });
 //for connection to recieve or send messages
