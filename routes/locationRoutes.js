@@ -8,5 +8,5 @@ const { isAuthenticatedUser } = require("../middleware/auth");
 
 router.route("/location/upsert").post(isAuthenticatedUser, addOrUpdateLocation);
 
-router.route("/nearby/users").get(isAuthenticatedUser, getUsersWithinRadius);
+router.route("/nearby/users").get(getUsersWithinRadius);
 module.exports = router;

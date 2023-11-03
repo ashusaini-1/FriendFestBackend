@@ -6,24 +6,44 @@ const crypto = require("crypto");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Enter your Name"],
   },
 
   contact: {
     type: String,
-    required: [true, "Enter your contact"],
-    unique: true
-  
+
+    unique: true,
   },
   email: {
     type: String,
-    required: [true, "Enter your Email"],
+
     unique: true,
     validate: [validator.isEmail, "Please Enter a valid Email"],
   },
+  photo: String,
+
+  googleId: {
+    type: String,
+
+    unique: true,
+  },
+  facebookId: {
+    type: String,
+
+    unique: true,
+  },
+  appleId: {
+    type: String,
+
+    unique: true,
+  },
+  role: {
+    type: String,
+    enum: ["admin", "user"],
+    default: "user",
+  },
+
   password: {
     type: String,
-    required: [true, "Enter your Password"],
   },
   createdAt: {
     type: Date,

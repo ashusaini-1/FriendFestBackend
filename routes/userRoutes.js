@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const { isAuthenticatedUser } = require("../middleware/auth");
 const {
   registerUser,
@@ -17,8 +18,8 @@ router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").post(isAuthenticatedUser, logout);
 router.route("/forgot").post(isAuthenticatedUser, forgotPassword);
-router.route("/me").get(isAuthenticatedUser, getUserDetails);
-router.route("/users").get(isAuthenticatedUser, allUser);
+router.route("/me/:id").get(isAuthenticatedUser, getUserDetails);
+router.route("/all/users").get(isAuthenticatedUser, allUser);
 router.route("/update/user/:id").put(isAuthenticatedUser, updateUser);
 router.route("/delete/user/:id").delete(isAuthenticatedUser, deleteUser);
 

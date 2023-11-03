@@ -1,21 +1,24 @@
 const User = require("../model/userModel");
 const { sendToken } = require("../utils/jwtToken");
-const ErrorHandler = require("../utils/errorHandler");
-
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 //Register User
 module.exports.registerUser = async (req, res, next) => {
-  const { name, email, password ,contact} = req.body;
+  const { name, email, password, contact } = req.body;
 
   try {
-    if (!name || !email ||!contact|| !password) {
-      return next(new ErrorHandler("Please Enter all the Details", 401));
+    if (!name || !email || !contact || !password) {
+      return res.status(401).json({
+        success: false,
+        message: "Please Enter all the Details",
+      });
     }
 
-    const userExists = await User.findOne({email});
-    const numberExists = await User.findOne({contact});
+    const userExists = await User.findOne({ email });
+    const numberExists = await User.findOne({ contact });
 
-    if (userExists ||numberExists ) {
+    if (userExists || numberExists) {
       return res.status(409).json({
         success: false,
         message: "User already exists",
@@ -25,7 +28,7 @@ module.exports.registerUser = async (req, res, next) => {
       name,
       email,
       contact,
-      password
+      password,
     });
 
     sendToken(user, 200, res);
@@ -35,6 +38,7 @@ module.exports.registerUser = async (req, res, next) => {
 };
 
 //Login User
+
 module.exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -45,15 +49,23 @@ module.exports.loginUser = async (req, res, next) => {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return next(new ErrorHandler("Invalid email or password", 401));
+      return res.status(404).json({
+        success: false,
+        message: "User not found with this email",
+      });
     }
 
-    const isPasswordMatched = await user.comparePassword(password);
+    // Compare the provided password with the stored hash using bcrypt.compare
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatched) {
-      return next(new ErrorHandler("Invalid email or password", 401));
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
+    // Password matches, send a token
     sendToken(user, 200, res);
   } catch (error) {
     next(error);
@@ -64,28 +76,39 @@ module.exports.loginUser = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email, newPassword } = req.body;
-    const user = await User.findOne({ email })
-    if (!user) {
-      throw new ErrorHandler('User not found', 404);
+
+    if (!email || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide both email and newPassword.",
+      });
     }
-    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found with this email",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpire = Date.now() + 3600000;
 
-   
     user.password = newPassword;
 
-   
     await user.save();
 
     res.status(200).json({
       success: true,
-      message: 'Password reset successfully',
+      message: "Password reset successful",
     });
   } catch (error) {
     next(error);
   }
 };
+
 module.exports.logout = async (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
@@ -99,12 +122,24 @@ module.exports.logout = async (req, res) => {
 
 // Get User Detail
 exports.getUserDetails = async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  try {
+    console.log(req.user.id);
+    const user = await User.findById(req.params.id);
 
-  res.status(200).json({
-    success: true,
-    user,
-  });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 //get All User Details
@@ -140,7 +175,6 @@ exports.deleteUser = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
-      user,
     });
   } catch (error) {
     next(error);

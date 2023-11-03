@@ -58,7 +58,7 @@ exports.getUsersWithinRadius = async (req, res) => {
             type: "Point",
             coordinates: [parseFloat(longitude), parseFloat(latitude)],
           },
-          $maxDistance: 200,
+           $maxDistance: 200,
         },
       },
     }).populate({
