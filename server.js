@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 5500;
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
-    //credentials: true,
+    origin: "https://friendfestapp.onrender.com",
+    methods: ["GET", "POST"],
   },
 });
 
