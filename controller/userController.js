@@ -2,13 +2,15 @@ const User = require("../model/userModel");
 const { sendToken } = require("../utils/jwtToken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const ApiFeatures = require("../utils/apifeatures");
 
 //Register User
 module.exports.registerUser = async (req, res, next) => {
-  const { name, email, password, contact } = req.body;
+  const { name, dob, gender, email, password } = req.body;
+  console.log(email, password, name);
 
   try {
-    if (!name || !email || !contact || !password) {
+    if (!name || !email || !gender || !dob || !password) {
       return res.status(401).json({
         success: false,
         message: "Please Enter all the Details",
@@ -16,9 +18,8 @@ module.exports.registerUser = async (req, res, next) => {
     }
 
     const userExists = await User.findOne({ email });
-    const numberExists = await User.findOne({ contact });
 
-    if (userExists || numberExists) {
+    if (userExists) {
       return res.status(409).json({
         success: false,
         message: "User already exists",
@@ -26,11 +27,13 @@ module.exports.registerUser = async (req, res, next) => {
     }
     const user = await User.create({
       name,
+      dob,
       email,
-      contact,
+      gender,
       password,
     });
 
+    console.log(user);
     sendToken(user, 200, res);
   } catch (error) {
     next(error);
@@ -41,6 +44,7 @@ module.exports.registerUser = async (req, res, next) => {
 
 module.exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
   try {
     if (!email || !password) {
       return next(new ErrorHandler("Please Enter Email and Password", 400));
@@ -126,7 +130,6 @@ exports.getUserDetails = async (req, res, next) => {
     console.log(req.user.id);
     const user = await User.findById(req.params.id);
 
-
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -139,6 +142,51 @@ exports.getUserDetails = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+
+module.exports.searchUsers = async (req, res) => {
+  try {
+    const searchTerm = req.query.name || ""; // Get the name search term from the query parameters
+
+    if (searchTerm === "") {
+      return res.status(400).json({
+        success: false,
+        message: "A search term is required.",
+      });
+    }
+
+    const initialQuery = User.find({
+      name: { $regex: searchTerm, $options: "i" },
+    });
+
+    // Get the total count of users matching the search term
+    const userCount = await User.countDocuments({
+      name: { $regex: searchTerm, $options: "i" },
+    });
+
+    if (userCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    const apiFeature = new ApiFeatures(initialQuery, req.query).filter();
+
+    const users = await apiFeature.query;
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching users",
+    });
   }
 };
 

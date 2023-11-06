@@ -11,6 +11,7 @@ const {
   forgotPassword,
   updateUser,
   deleteUser,
+  searchUsers
 } = require("../controller/userController");
 
 //userRoutes
@@ -20,6 +21,7 @@ router.route("/logout").post(isAuthenticatedUser, logout);
 router.route("/forgot").post(isAuthenticatedUser, forgotPassword);
 router.route("/me/:id").get(isAuthenticatedUser, getUserDetails);
 router.route("/all/users").get(isAuthenticatedUser, allUser);
+router.route("/search").get(isAuthenticatedUser, searchUsers);
 router.route("/update/user/:id").put(isAuthenticatedUser, updateUser);
 router.route("/delete/user/:id").delete(isAuthenticatedUser, deleteUser);
 

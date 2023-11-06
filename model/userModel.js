@@ -8,11 +8,9 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
-  contact: {
-    type: String,
+  dob: { type: Date, required: true },
+  gender: { type: String, enum: ["male", "female"] },
 
-    unique: true,
-  },
   email: {
     type: String,
 
@@ -23,18 +21,20 @@ const userSchema = new mongoose.Schema({
 
   googleId: {
     type: String,
-
-    unique: true,
+   default:"null"
+   
   },
   facebookId: {
     type: String,
+    default:"null"
 
-    unique: true,
+   
   },
   appleId: {
     type: String,
+    default:"null"
 
-    unique: true,
+   
   },
   role: {
     type: String,

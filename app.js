@@ -6,7 +6,7 @@ const user = require("./routes/userRoutes");
 const location = require("./routes/locationRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-const passportRoutes = require("./routes/passportRoutes");
+ const passportRoutes = require("./routes/passportRoutes");
 const cors = require("cors");
 
 const passport = require("passport");
@@ -38,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 connectPassport();
 connectFacebook();
-// app.enable("trust proxy");
+app.enable("trust proxy");
 
 // const corsOptions = {
 //     origin: 'https://friendfestapp.onrender.com', // Replace with the appropriate frontend URL
@@ -50,16 +50,7 @@ connectFacebook();
 
 //for facebook
 
-// passport.use(new FacebookStrategy({
-//     clientID: "662090019391054",
-//     clientSecret: "62d2846e3171afb8de04c5b5234ba738",
-//     callbackURL: "http://localhost:3000/auth/facebook/callback"
-//   },
-//   function(accessToken, refreshToken, profile, cb) {
-//   console.log(profile);
-//   return deleteOne(null,profile);
-//   }
-// ));
+
 
 app.use("/api/user", user);
 app.use("/api/location", location);
